@@ -1,0 +1,8 @@
+This is a simple demo using akka actors. We have two types of actors:
+
+* BoardActor is an actor for a game board
+* PlayerActor is an actor for a player
+
+To run it, execute BoardActor.run - which will start a remote actor for the board. After that, execute PlayerActor.run("playername") for each player you want to have. This will start a player actor, and a Scala Swing screen for the game area.
+
+Please keep in mind this is just a simple demo, not a full fledged game... but it can become this in the future =)
