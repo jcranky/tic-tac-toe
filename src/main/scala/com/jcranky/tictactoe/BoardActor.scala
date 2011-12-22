@@ -8,26 +8,25 @@ class BoardActor extends Actor {
   var p2: Option[(String, ActorRef)] = None
   
   def receive = {
-    case JoinGame(name) => {
-        println("[board] received JoinGame request from " + name)
-        if (p1.isEmpty) {
-          p1 = buildPlayer(name, self.channel)
-          self.reply(JoinedGame(1))
+    case JoinGame(name) =>
+      println("[board] received JoinGame request from " + name)
+      if (p1.isEmpty) {
+        p1 = buildPlayer(name, self.channel)
+        self.reply(JoinedGame(1))
           
-        } else if (p2.isEmpty) {
-          p2 = buildPlayer(name, self.channel)
-          self.reply(JoinedGame(2))
+      } else if (p2.isEmpty) {
+        p2 = buildPlayer(name, self.channel)
+        self.reply(JoinedGame(2))
           
-        } else {
-          self.reply(GameFull)
-        }
+      } else {
+        self.reply(GameFull)
       }
-    case play: PlayAt => {
-        println("[board] playing at " + play.x + " " + play.y)
         
-        if (self.channel == p1.get._2) p2.get._2.forward(play)
-        else p1.get._2.forward(play)
-    }
+    case play: PlayAt =>
+      println("[board] playing at " + play.x + " " + play.y)
+        
+      if (self.channel == p1.get._2) p2.get._2.forward(play)
+      else p1.get._2.forward(play)
   }
   
   def buildPlayer(name: String, channel: UntypedChannel): Option[(String, ActorRef)] = {
