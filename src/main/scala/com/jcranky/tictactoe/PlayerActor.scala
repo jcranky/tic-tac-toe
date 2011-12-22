@@ -8,23 +8,19 @@ class PlayerActor(val playerName: String) extends Actor {
   var boardFrame: Option[BoardFrame] = None
   
   def receive = {
-    case ConnectToBoard => {
+    case ConnectToBoard =>
         println("[" + playerName + "] about to connect to the board")
         boardActor ! JoinGame(playerName)
-      }
       
-    case JoinedGame(playerNumber) => {
+    case JoinedGame(playerNumber) =>
         println("[" + playerName + "] received join confirmation as player " + playerNumber)
         boardFrame = Some(BoardFrame.run(this))
-      }
       
-    case GameFull => {
+    case GameFull =>
         println("[" + playerName + "] too bad, board said that the game is already full")
-      }
       
-    case PlayAt(x, y) => {
+    case PlayAt(x, y) =>
         boardFrame.get.otherPlayed(x, y)
-      }
   }
   
   def play(x: Int, y: Int) = boardActor ! PlayAt(x, y)
